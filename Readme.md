@@ -1,7 +1,5 @@
 # Сборка OpenCV и FFmpeg в Docker
 
----
-
 ## FFmpeg
 Ссылка с инструкцией из документации: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 
@@ -88,8 +86,6 @@ make install && \
 hash -r
 ```
 
----
-
 ## OpenCV
 Ссылка с инструкцией из документации: https://docs.opencv.org/4.x/d2/de6/tutorial_py_setup_in_ubuntu.html
 
@@ -124,13 +120,6 @@ cd opencv
 ```
 Создаем папку для сборки
 ```bash
-mkdir build && \
-cd build
-```
-~={orange}Для повторной сборки!!!=~
-```bash
-cd ../ && \
-rm -r build && \
 mkdir build && \
 cd build
 ```
@@ -187,8 +176,22 @@ make install
 ```bash
 python3 -c "import cv2; print(cv2.__version__)"
 ```
-
----
+#### Дополнительно
+<span style="color:#f00">**Для повторной сборки!!!**</span>
+```bash
+cd ../ && \
+rm -r build && \
+mkdir build && \
+cd build
+```
+Чтобы уменьшить Timeout при подключении и считывании, меняем значение в этом файле 
+<span style="background-color:#424242; border:1px solid #424242; padding:2px 6px; border-radius:4px;">
+modules/videoio/src/cap_ffmpeg_impl.hpp
+</span>
+```cpp 
+#define LIBAVFORMAT_INTERRUPT_OPEN_TIMEOUT_MS 5000
+#define LIBAVFORMAT_INTERRUPT_READ_TIMEOUT_MS 5000
+```
 
 ## Упаковываем все
 ```bash
@@ -205,8 +208,6 @@ docker cp <container_id>:/opt/opencv-install.tar.gz .
 ```bash
 docker cp <container_id>:/root/ffmpeg-custom.tar.gz .
 ```
-
----
 
 ## Установка в другом контейнере
 Доступна по ссылке:
