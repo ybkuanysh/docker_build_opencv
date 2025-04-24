@@ -1,0 +1,6 @@
+services:
+  build_opencv:
+    build: .
+    container_name: opencv_build
+    image: opencv_2000ms
+    command: tail -f /dev/null
